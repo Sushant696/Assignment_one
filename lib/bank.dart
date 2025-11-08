@@ -1,3 +1,5 @@
+import 'package:dart_assignment/interest_bearing.dart';
+
 import 'bank_account.dart';
 
 class Bank {
@@ -45,6 +47,14 @@ class Bank {
     for (var account in _accounts) {
       account.displayAccountInfo();
       print('---------------------------');
+    }
+  }
+
+  void applyMonthlyInterest() {
+    for (var account in _accounts) {
+      if (account is InterestBearing) {
+        account.applyInterest();
+      }
     }
   }
 }

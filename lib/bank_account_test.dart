@@ -10,6 +10,7 @@ class SavingsAccount extends BankAccount implements InterestBearing {
   @override
   void deposit(double amount) {
     balance += amount;
+    recordTransaction('Deposited \$${amount.toStringAsFixed(2)}');
   }
 
   @override
@@ -24,6 +25,7 @@ class SavingsAccount extends BankAccount implements InterestBearing {
     }
     balance -= amount;
     _withdrawalCount++;
+    recordTransaction('Withdrew \$${amount.toStringAsFixed(2)}');
   }
 
   @override
@@ -45,6 +47,7 @@ class PremiumAccount extends BankAccount implements InterestBearing {
   @override
   void deposit(double amount) {
     balance += amount;
+    recordTransaction('Deposited \$${amount.toStringAsFixed(2)}');
   }
 
   @override
@@ -54,6 +57,7 @@ class PremiumAccount extends BankAccount implements InterestBearing {
       return;
     }
     balance -= amount;
+    recordTransaction('Withdrew \$${amount.toStringAsFixed(2)}');
   }
 
   @override
@@ -82,9 +86,39 @@ class CheckingAccount extends BankAccount {
   @override
   void withdraw(double amount) {
     balance -= amount;
+    recordTransaction('Withdrew \$${amount.toStringAsFixed(2)}');
+
     if (balance < 0) {
       balance -= 35;
+      recordTransaction('Overdraft fee of \$35 applied');
+      print(
+        'Warning: Overdraft fee applied. Your balance is now \$${balance.toStringAsFixed(2)}',
+      );
     }
+  }
+}
+
+class StudentAccount extends BankAccount {
+  StudentAccount(super.accountNumber, super.accountHolderName, super.balance);
+
+  @override
+  void deposit(double amount) {
+    if (balance + amount > 5000) {
+      print('Cannot exceed maximum balance of \$5000.');
+      return;
+    }
+    balance += amount;
+    recordTransaction('Deposited \$${amount.toStringAsFixed(2)}');
+  }
+
+  @override
+  void withdraw(double amount) {
+    if (balance - amount < 0) {
+      print('Insufficient funds.');
+      return;
+    }
+    balance -= amount;
+    recordTransaction('Withdrew \$${amount.toStringAsFixed(2)}');
   }
 }
 

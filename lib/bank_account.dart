@@ -3,6 +3,8 @@ abstract class BankAccount {
   String _accountHolderName;
   double _balance;
 
+  final List<String> _transactionHistory = [];
+
   BankAccount(this._accountNumber, this._accountHolderName, this._balance);
 
   double get balance => _balance;
@@ -16,9 +18,26 @@ abstract class BankAccount {
   void deposit(double amount);
   void withdraw(double amount);
 
+  void recordTransaction(String message) {
+    _transactionHistory.add('${DateTime.now()} - $message');
+  }
+
+  void showTransactionHistory() {
+    print('\nTransaction history for $_accountNumber:');
+    if (_transactionHistory.isEmpty) {
+      print('No transactions yet.');
+    } else {
+      for (var tx in _transactionHistory) {
+        print('- $tx');
+      }
+    }
+  }
+
   void displayAccountInfo() {
     print('Account: $_accountNumber');
     print('Holder: $_accountHolderName');
     print('Balance: \$$_balance');
   }
+
+  void applyInterest() {}
 }
